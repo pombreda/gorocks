@@ -6,10 +6,12 @@ package gorocks
 */
 import "C"
 
-func GetLevelDBMajorVersion() int {
-	return int(C.leveldb_major_version())
+func GetrocksdbMajorVersion() int {
+	// return int(C.rocksdb_major_version())
+	return 1
 }
 
-func GetLevelDBMinorVersion() int {
-	return int(C.leveldb_minor_version())
+func GetrocksdbMinorVersion() int {
+	// return int(C.rocksdb_minor_version())
+	return 0
 }
