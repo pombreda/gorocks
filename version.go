@@ -1,8 +1,8 @@
-package levigo
+package gorocks
 
 /*
-#cgo LDFLAGS: -lleveldb
-#include "leveldb/c.h"
+#cgo LDFLAGS: -lrocksdb
+#include "rocksdb/c.h"
 */
 import "C"
 
