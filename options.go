@@ -85,13 +85,6 @@ func (o *Options) SetErrorIfExists(error_if_exists bool) {
 	C.rocksdb_options_set_error_if_exists(o.Opt, eie)
 }
 
-// SetCache places a cache object in the database when a database is opened.
-//
-// This is usually wise to use. See also ReadOptions.SetFillCache.
-func (o *Options) SetCache(cache *Cache) {
-	C.rocksdb_options_set_cache(o.Opt, cache.Cache)
-}
-
 // SetEnv sets the Env object for the new database handle.
 func (o *Options) SetEnv(env *Env) {
 	C.rocksdb_options_set_env(o.Opt, env.Env)
@@ -135,13 +128,12 @@ func (o *Options) SetBlockSize(s int) {
 	C.rocksdb_options_set_arena_block_size(o.Opt, C.size_t(s))
 }
 
-// SetBlockRestartInterval is the number of keys between restarts points for
-// delta encoding keys.
+// SetBlockSize sets the approximate size of user data packed per block.
 //
-// Most clients should leave this parameter alone. See the rocksdb
-// documentation for details.
-func (o *Options) SetBlockRestartInterval(n int) {
-	C.rocksdb_block_based_options_set_block_restart_interval(o.Opt, C.int(n))
+// The default is roughly 4096 uncompressed bytes. A better setting depends on
+// your use case. See the rocksdb documentation for details.
+func (o *Options) SetArenaBlockSize(s int) {
+	C.rocksdb_options_set_arena_block_size(o.Opt, C.size_t(s))
 }
 
 // SetCompression sets whether to compress blocks using the specified
@@ -160,17 +152,6 @@ func (o *Options) SetCompression(t CompressionOpt) {
 // not already exist.
 func (o *Options) SetCreateIfMissing(b bool) {
 	C.rocksdb_options_set_create_if_missing(o.Opt, boolToUchar(b))
-}
-
-// SetFilterPolicy causes Open to create a new database that will uses filter
-// created from the filter policy passed in.
-func (o *Options) SetFilterPolicy(fp *FilterPolicy) {
-	var policy *C.rocksdb_filterpolicy_t
-	if fp != nil {
-		policy = fp.Policy
-	}
-	// C.rocksdb_options_set_filter_policy(o.Opt, policy)
-	C.rocksdb_block_based_options_set_filter_policy(o.Opt, policy)
 }
 
 // Close deallocates the ReadOptions, freeing its underlying C struct.
