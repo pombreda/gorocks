@@ -138,10 +138,10 @@ func (o *Options) SetBlockSize(s int) {
 // SetBlockRestartInterval is the number of keys between restarts points for
 // delta encoding keys.
 //
-// Most clients should leave this parameter alone. See the LevelDB
+// Most clients should leave this parameter alone. See the rocksdb
 // documentation for details.
 func (o *Options) SetBlockRestartInterval(n int) {
-	C.leveldb_options_set_block_restart_interval(o.Opt, C.int(n))
+	C.rocksdb_block_based_options_set_block_restart_interval(o.Opt, C.int(n))
 }
 
 // SetCompression sets whether to compress blocks using the specified
@@ -165,11 +165,12 @@ func (o *Options) SetCreateIfMissing(b bool) {
 // SetFilterPolicy causes Open to create a new database that will uses filter
 // created from the filter policy passed in.
 func (o *Options) SetFilterPolicy(fp *FilterPolicy) {
-	var policy *C.leveldb_filterpolicy_t
+	var policy *C.rocksdb_filterpolicy_t
 	if fp != nil {
 		policy = fp.Policy
 	}
-	C.leveldb_options_set_filter_policy(o.Opt, policy)
+	// C.rocksdb_options_set_filter_policy(o.Opt, policy)
+	C.rocksdb_block_based_options_set_filter_policy(o.Opt, policy)
 }
 
 // Close deallocates the ReadOptions, freeing its underlying C struct.
