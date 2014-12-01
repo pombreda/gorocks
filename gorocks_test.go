@@ -188,7 +188,7 @@ func TestC(t *testing.T) {
 	DestroyDatabase(dbname, options)
 	// filter
 	policy := NewBloomFilter(10)
-	// toptions.SetFilterPolicy(policy)
+	toptions.SetFilterPolicy(policy)
 	db, err = Open(dbname, options)
 	// if err != nil {
 	// 	t.Fatalf("Unable to recreate db for filter tests: %v", err)
@@ -205,7 +205,8 @@ func TestC(t *testing.T) {
 	// CheckGet(t, "filter", db, roptions, []byte("foo"), []byte("foovalue"))
 	// CheckGet(t, "filter", db, roptions, []byte("bar"), []byte("barvalue"))
 	// toptions.SetFilterPolicy(nil) // this does nothing
-
+	// toptions.Close()
+	// policy.Close()
 	// cleanup
 	db.Close()
 	DestroyDatabase(dbname, options)
@@ -214,7 +215,6 @@ func TestC(t *testing.T) {
 	woptions.Close()
 	cache.Close()
 	toptions.Close()
-	policy.Close()
 	// DestroyComparator(cmp)
 	env.Close()
 }
